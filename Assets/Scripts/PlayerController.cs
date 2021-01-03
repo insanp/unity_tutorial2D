@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speed = 2f;
     [SerializeField] float maxSpeedX = 5f;
     [SerializeField] float jumpSpeed = 15f;
+    [SerializeField] float maxJumpSpeed = 15f;
     [SerializeField] int numJump = 0;
     [SerializeField] int maxNumJump = 1;
     [SerializeField] float stopVelocitySmooth = 200f;
@@ -16,7 +17,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
 
     public Vector3 respawnPoint;
-    public LevelManager gameLevelManager;
 
     private float movement = 0f;
 
@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private Collider2D playerCollider;
     private Animator playerAnimation;
     private Vector2 stopVelocity;
+    private LevelManager gameLevelManager;
 
     private bool isTouchingGround;
     private bool isFacingRight = true;
@@ -64,7 +65,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && numJump < maxNumJump )
         {
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+            float newJumpSpeed = Mathf.Clamp(rigidBody.velocity.y + jumpSpeed, jumpSpeed * 0.7f, maxJumpSpeed);
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, newJumpSpeed);
         } else if (Input.GetButtonUp("Jump") && !isTouchingGround && numJump < maxNumJump)
         {
             numJump++;
@@ -108,7 +110,7 @@ public class PlayerController : MonoBehaviour
             gameLevelManager.Respawn();
         }
 
-        if (collision.tag == "Checkpoint")
+        if (collision.tag == "Checkpoint" && !collision.gameObject.GetComponent<CheckpointController>().checkpointReached)
         {
             // check respawn point
             respawnPoint = collision.transform.position;

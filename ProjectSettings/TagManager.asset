@@ -6,6 +6,7 @@ TagManager:
   tags:
   - FallDetector
   - Checkpoint
+  - PlayerHitBox
   layers:
   - Default
   - TransparentFX

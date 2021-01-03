@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class CoinScript : MonoBehaviour
 {
-    public int score = 0;
+    [SerializeField] int coinsValue = 1;
+
+    private LevelManager gameLevelManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameLevelManager = FindObjectOfType<LevelManager>();
     }
 
     // Update is called once per frame
@@ -20,7 +22,11 @@ public class CoinScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(gameObject);
-        score++;
+        if (collision.tag == "PlayerHitBox")
+        {
+            Destroy(gameObject);
+            gameLevelManager.AddCoins(coinsValue);
+        }
+
     }
 }
