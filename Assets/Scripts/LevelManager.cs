@@ -25,7 +25,6 @@ public class LevelManager : MonoBehaviour
 
     public void AddCoins(int numOfCoins)
     {
-        Debug.Log(numOfCoins);
         coins += numOfCoins;
     }
 

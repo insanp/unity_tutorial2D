@@ -25,12 +25,19 @@ public class CheckpointController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PlayerHitBox" && !checkpointReached)
+        if (collision.tag == "Player" && !checkpointReached)
         {
             // do something
             checkpointSpriteRenderer.sprite = greenFlag;
             checkpointReached = true;
+            collision.GetComponent<PlayerController>().respawnPoint = transform.position;
         }
+    }
+
+    public void activateCheckpoint()
+    {
+        checkpointSpriteRenderer.sprite = greenFlag;
+        checkpointReached = true;
     }
 
 }

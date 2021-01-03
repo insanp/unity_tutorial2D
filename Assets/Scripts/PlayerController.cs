@@ -110,10 +110,15 @@ public class PlayerController : MonoBehaviour
             gameLevelManager.Respawn();
         }
 
-        if (collision.tag == "Checkpoint" && !collision.gameObject.GetComponent<CheckpointController>().checkpointReached)
+        if (collision.tag == "Checkpoint")
         {
-            // check respawn point
-            respawnPoint = collision.transform.position;
+            // update respawn point
+            var checkpoint = collision.gameObject.GetComponent<CheckpointController>();
+            if (!checkpoint.checkpointReached)
+            {
+                checkpoint.activateCheckpoint();
+                respawnPoint = checkpoint.transform.position;
+            }
         }
     }
 }
