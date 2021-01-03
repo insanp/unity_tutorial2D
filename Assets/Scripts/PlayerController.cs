@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Collider2D groundCollider;
     [SerializeField] LayerMask groundLayer;
 
+    public Vector3 respawnPoint;
+    public LevelManager gameLevelManager;
+
     private float movement = 0f;
 
     private Rigidbody2D rigidBody;
@@ -31,6 +34,8 @@ public class PlayerController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
         playerAnimation = GetComponent<Animator>();
+        respawnPoint = playerAnimation.transform.position;
+        gameLevelManager = FindObjectOfType<LevelManager>();
     }
 
     // Update is called once per frame
@@ -65,7 +70,11 @@ public class PlayerController : MonoBehaviour
             numJump++;
 
             // stop going up
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, 0);
+            if (rigidBody.velocity.y > 0f)
+            {
+                rigidBody.velocity = new Vector2(rigidBody.velocity.x, 0);
+            }
+            
         }
 
         if (isTouchingGround)
@@ -89,5 +98,20 @@ public class PlayerController : MonoBehaviour
     public bool GetFacingRight()
     {
         return isFacingRight;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "FallDetector")
+        {
+            // respawn or dead
+            gameLevelManager.Respawn();
+        }
+
+        if (collision.tag == "Checkpoint")
+        {
+            // check respawn point
+            respawnPoint = collision.transform.position;
+        }
     }
 }
