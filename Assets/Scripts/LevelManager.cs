@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] float respawnDelay = 2f;
+    [SerializeField] Text coinsText;
 
     public PlayerController gamePlayer;
     public int coins = 0;
@@ -18,7 +20,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        coinsText.text = "Coins : " + coins.ToString();
     }
 
     public void AddCoins(int numOfCoins)
